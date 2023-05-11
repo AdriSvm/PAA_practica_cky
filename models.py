@@ -22,7 +22,8 @@ class CKY():
         :return: None, saves the grammar in class variables
         """
         G = ChomskyConverter(nltk.CFG.fromstring(grammar))
-        self.grammar = G.convert_cfg()
+        G.convert_cfg()
+        self._grammar = G.grammar
 
     def _initialise_probabilistic_grammar(self,grammar:str):
         self._pgrammar = PCFG.fromstring(grammar)
@@ -88,7 +89,6 @@ class CKY():
                         for left in left_cell:
                             for right in right_cell:
                                 for z in self._grammar.productions(rhs=left):
-                                    print(z.rhs())
                                     if len(z.rhs()) > 1 and z.rhs()[1] == right:
                                         self._table[i][j].add(z.lhs())
 
@@ -178,14 +178,15 @@ class CKY():
                 """
         grammar = """
                 S -> A B | A C
-                A -> 'a' D
+                A -> 'a'
                 B -> 'b'
                 C -> 'c'
                 D -> 'g'
                 """
         sentences = [
-            "abc",
-            "aabb"
+            "ab",
+            "ac",
+            "aac"
         ]
         for sentence in sentences:
             if self.cky_parse(list(sentence), grammar):

@@ -24,7 +24,7 @@ class ChomskyConverter:
         :return: bool whether the self.grammar is or not in chomsky normal form (CNF)
         """
         return all([not self.are_unitary_rules(),not self.are_3mprods(),
-                        not self.are_more_terminals(),not self.are_malformed_terminals()])
+                        not self.are_malformed_terminals()])
     def is_unitary_nt(self,prod:Production) -> bool:
         """
         :param prod: object of nltk.Production
@@ -99,7 +99,6 @@ class ChomskyConverter:
         Removes all unreachable productions of the self.grammar object
         :return: None
         """
-        print('a')
         reachable_symbols = self.grammar_BFS()
 
         new_productions = [p for p in self.grammar.productions() if p.lhs() in reachable_symbols and all(
@@ -138,7 +137,7 @@ class ChomskyConverter:
             if new_prods:
                 self.grammar = CFG(start=self.grammar.start(),productions=new_prods)
 
-    def are_more_terminals(self,production:Production=None):
+    def are_more_terminals(self,production:Production):
         """
         :param production: A Production object of nltk
         :return: bool whether the production or the self.grammar have mo
@@ -146,10 +145,6 @@ class ChomskyConverter:
         if production:
             return not all([isinstance(i,Nonterminal) for i in production.rhs()])
 
-        for prod in self.grammar.productions():
-            if not all([isinstance(i,Nonterminal) for i in prod.rhs()]):
-                return True
-        return False
 
     def are_malformed_terminals(self):
         for prod in self.grammar.productions():
@@ -212,7 +207,7 @@ H -> 'd'
 """)
 
 
-cfg = ChomskyConverter(grammar)
+'''cfg = ChomskyConverter(grammar)
 print(cfg.is_chomsky_normal_form())
 print(cfg.grammar)
 cfg.remove_unitaries()
@@ -224,3 +219,4 @@ print(cfg.grammar)
 cfg.change_terminals()
 print(cfg.grammar)
 print(cfg.grammar.is_chomsky_normal_form())
+print(cfg.is_chomsky_normal_form())'''
