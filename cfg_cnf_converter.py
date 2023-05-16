@@ -1,5 +1,5 @@
 import nltk
-from nltk import CFG, Nonterminal, Production
+from nltk import CFG, PCFG, Nonterminal, Production, ProbabilisticProduction
 
 
 class ChomskyConverter:
@@ -173,6 +173,70 @@ class ChomskyConverter:
 
         if new_prods:
             self.grammar = nltk.CFG(start=self.grammar.start(),productions=new_prods)
+
+
+class ProbabilisticChomskyConverter(ChomskyConverter):
+    def __init__(self, grammar: PCFG) -> None:
+        super().__init__(grammar)
+        self.non_terminal_count = 0
+
+    def convert_pcfg(self) -> nltk.grammar:
+        """
+        :return: PCFG gramatic converted to CNF
+        """
+        if not self.is_chomsky_normal_form():
+            self.remove_unitaries()
+            self.remove_unreachable()
+            self.remove_3mprods()
+            self.change_terminals()
+        return self.grammar
+
+    # [ ... all your other methods ... ]
+
+    def remove_3mprods(self) -> None:
+        """
+        Processes all productions with more than 3 symbols in its right hand of the object self.grammar
+        :return: None
+        """
+        counter_nt = 0
+
+        while self.are_3mprods():
+            new_prods = []
+            for prod in self.grammar.productions():
+                if len(prod.rhs()) > 2:
+                    new_nt = Nonterminal(f"X{counter_nt}")
+                    counter_nt += 1
+                    new_prods.append(ProbabilisticProduction(lhs=prod.lhs(),rhs=[prod.rhs()[0],new_nt], prob=prod.prob()))
+                    new_prods.append(ProbabilisticProduction(lhs=new_nt,rhs=[i for i in prod.rhs()[1:]], prob=1.0))
+
+                else:
+                    new_prods.append(prod)
+
+            if new_prods:
+                self.grammar = PCFG(start=self.grammar.start(),productions=new_prods)
+
+    def change_terminals(self):
+        counter_nt = 0
+        new_prods = []
+        for pr in self.grammar.productions():
+            if not self.is_unitary(pr) and self.are_more_terminals(production=pr):
+                rhss = []
+                for symbol in pr.rhs():
+                    if isinstance(symbol,str):
+                        new_nt = Nonterminal(f"Y{counter_nt}")
+                        counter_nt += 1
+
+                        new_prods.append(ProbabilisticProduction(lhs=new_nt,rhs=[symbol], prob=1.0))
+                        rhss.append(new_nt)
+                    else:
+                        rhss.append(symbol)
+                new_prods.append(ProbabilisticProduction(lhs=pr.lhs(),rhs=rhss, prob=pr.prob()))
+
+            elif pr not in new_prods:
+                new_prods.append(pr)
+
+        if new_prods:
+            self.grammar = PCFG(start=self.grammar.start(),productions=new_prods)
 
 
 
