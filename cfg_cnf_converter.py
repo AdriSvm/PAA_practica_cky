@@ -48,7 +48,7 @@ class ChomskyConverter:
                 return True
         return False
 
-    def rhss(self,prods:list[Production]) -> list:
+    def rhss(self,prods:Production) -> list:
         """
         :param prods: List of Production objects from nltk
         :return: All rhs() of all the productions in a list
@@ -190,8 +190,26 @@ class ProbabilisticChomskyConverter(ChomskyConverter):
             self.remove_3mprods()
             self.change_terminals()
         return self.grammar
+    
+    def remove_unitaries(self) -> None:
+        """
+        Removes all the unitary Nonterminal productions in the self.grammar object
+        :return: None
+        """
+        while self.are_unitary_rules():
+            prods = []
+            for prod in self.grammar.productions():
+                if self.is_unitary_nt(prod):
+                    for pr in self.grammar.productions(lhs=prod.rhs()[0]):
+                        prods.append(ProbabilisticProduction(prod.lhs(),pr.rhs(), prob=prod.prob()*pr.prob()))
 
-    # [ ... all your other methods ... ]
+                elif prod not in prods:
+                    prods.append(prod)
+
+            if prods:
+                self.grammar = PCFG(self.grammar.start(), prods)
+
+
 
     def remove_3mprods(self) -> None:
         """
@@ -199,7 +217,6 @@ class ProbabilisticChomskyConverter(ChomskyConverter):
         :return: None
         """
         counter_nt = 0
-
         while self.are_3mprods():
             new_prods = []
             for prod in self.grammar.productions():
@@ -237,50 +254,3 @@ class ProbabilisticChomskyConverter(ChomskyConverter):
 
         if new_prods:
             self.grammar = PCFG(start=self.grammar.start(),productions=new_prods)
-
-
-
-grammar = CFG.fromstring("""
-    S -> A
-    A -> B
-    B -> C
-    C -> D
-    D -> E
-    E -> F
-    F -> G
-    G -> 'a'
-    
-""")
-grammar = CFG.fromstring("""
-    S -> A B
-    A -> 'a'
-    B -> C
-    C -> 'c'
-    D -> 'd'
-""")
-grammar = CFG.fromstring("""
-    S -> A C
-A -> B
-B -> D
-C -> 'd'
-D -> E F G
-E -> 'a' F
-F -> 'b' G
-G -> 'c'
-H -> 'd'
-""")
-
-
-'''cfg = ChomskyConverter(grammar)
-print(cfg.is_chomsky_normal_form())
-print(cfg.grammar)
-cfg.remove_unitaries()
-print(cfg.grammar)
-cfg.remove_unreachable()
-print(cfg.grammar)
-cfg.remove_3mprods()
-print(cfg.grammar)
-cfg.change_terminals()
-print(cfg.grammar)
-print(cfg.grammar.is_chomsky_normal_form())
-print(cfg.is_chomsky_normal_form())'''

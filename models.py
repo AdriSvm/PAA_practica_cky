@@ -75,7 +75,6 @@ class CKY():
         Main method to call for executing the bottom_up CKY algorithm with Dynamic Programming
         :return: None, saves the result to the self._table object
         """
-        # Llenar la tabla CKY de manera recursiva
         if self._grammar and self._table and self._n > 0:
             for j in range(0, self._n):
                 for i in range(j - 1, -1, -1):
@@ -143,7 +142,7 @@ class CKY():
             return True
         else:
             self._n = 0
-            self._probabilities = [[{} for _ in range(self._n)] for _ in range(self._n)]
+            self._probabilities = [[]]
             return False
 
     def _bottom_up_pcky(self) -> None:
@@ -185,25 +184,26 @@ class CKY():
 
     def joc_de_proves(self):
         grammar = """
-            S -> NP VP
-            NP -> Det N
-            VP -> V NP
-            Det -> 'the' | 'a'
-            N -> 'cat' | 'dog' | 'table' | 'house'
-            V -> 'chases' | 'sleeps' | 'sits'
+            S -> NP VP [1.0]
+            NP -> N N [0.25]
+            NP -> D N [0.4]
+            NP -> N [0.35]
+            VP -> V NP [0.6]
+            VP -> V ADV NP [0.4]
+            N -> 'time' [0.4]
+            N -> 'flies' [0.2]
+            N -> 'arrow' [0.4]
+            D -> 'an' [1.0]
+            ADV -> 'like' [1.0]
+            V -> 'flies' [0.5]
+            V -> 'like' [0.5]
         """
-        sentences = [
-            "the cat chases a dog",
-            "a dog sleeps on the table",
-            "the house sits on the table",
-            "a cat chases the dog",
-            "the dog sleeps on a house"
-        ]
-        for sentence in sentences:
-            if self.cky_parse(sentence.split(), grammar):
-                print(f"'{sentence}' cumple con la gramática")
-            else:
-                print(f"'{sentence}' no cumple con la gramática")
+        sentences = "time flies like an arrow"
+
+        if self.pcky_parse(sentences, grammar):
+            print(f"'{sentences}' cumple con la gramática")
+        else:
+            print(f"'{sentences}' no cumple con la gramática")
 
 
     def joc_de_proves2(self):
@@ -236,7 +236,7 @@ class CKY():
         grammar_cnf = """
             S -> A B [1.0]
             A -> 'a' [1.0]
-            B -> C D [1.0]
+            B -> C D E [1.0]
             C -> 'b' [1.0]
             D -> E F [1.0]
             E -> 'c' [1.0]
@@ -270,6 +270,5 @@ class CKY():
                 print(f"'{sentence}' no cumple con la gramática, prob:", res)
 
 
-
 a = CKY()
-a.joc_de_proves_pcfg2()
+a.joc_de_proves()
