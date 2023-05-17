@@ -213,7 +213,7 @@ class ProbabilisticChomskyConverter(ChomskyConverter):
 
     def remove_3mprods(self) -> None:
         """
-        Processes all productions with more than 3 symbols in its right hand of the object self.grammar
+        Processes all productions with 3 or more symbols in its right hand of the object self.grammar
         :return: None
         """
         counter_nt = 0
