@@ -1,6 +1,8 @@
 import nltk
 from nltk import PCFG
 from cfg_cnf_converter import ChomskyConverter, ProbabilisticChomskyConverter
+import os
+from graphviz import Source
 
 class CKY():
 
@@ -15,6 +17,8 @@ class CKY():
 
         self._pgrammar = None
         self._probabilities = []
+
+        self._traza = None
 
     def _initialise_grammar(self,grammar:str) -> None:
         """
@@ -75,6 +79,7 @@ class CKY():
         Main method to call for executing the bottom_up CKY algorithm with Dynamic Programming
         :return: None, saves the result to the self._table object
         """
+        traza = {}
         if self._grammar and self._table and self._n > 0:
             for j in range(0, self._n):
                 for i in range(j - 1, -1, -1):
@@ -86,6 +91,15 @@ class CKY():
                                 for z in self._grammar.productions(rhs=left):
                                     if len(z.rhs()) > 1 and z.rhs()[1] == right:
                                         self._table[i][j].add(z.lhs())
+                                        traza[(i,j)] = (((i,k),(k+1,j)),z.lhs())
+                                        if i == k:
+                                            traza[(i,k)] = left
+                                        if k+1 == j:
+                                            traza[(k+1,j)] = right
+
+        self._traza = traza
+
+
 
     def cky_parse(self,words:list, grammar:str) -> bool:
         """
@@ -102,8 +116,43 @@ class CKY():
         if not self._initialise_table():
             return False
         self._bottom_up_cky()
-        return nltk.grammar.Nonterminal('S') in self._table[0][self._n - 1]
+        res =  nltk.grammar.Nonterminal('S') in self._table[0][self._n - 1]
+        if res:
+            self.reconstruir_traza()
+        return res
 
+    def reconstruir_traza(self):
+        if self._traza is None:
+            return ()
+        self._i = 0
+        def construir_arbre(ar,ele):
+            ar.append(ele[1])
+            pos_1 = ele[0][0]
+            pos_2 = ele[0][1]
+            if pos_1[0] == pos_1[1]:
+                ar.append([self._traza[pos_1],self._phrase[self._i]])
+                self._i = self._i+1
+            else:
+                ar.append([])
+                construir_arbre(ar[len(ar)-1],self._traza[pos_1])
+            if pos_2[0] == pos_2[1]:
+                ar.append([self._traza[pos_2],self._phrase[self._i]])
+                self._i = self._i + 1
+            else:
+                ar.append([])
+                construir_arbre(ar[len(ar) - 1], self._traza[pos_2])
+
+        arbre = []
+        construir_arbre(arbre,self._traza[(0,len(self._phrase)-1)])
+        tr = str(arbre)
+        tr = tr.replace(',', "")
+        tr = tr.replace('[', "(")
+        tr = tr.replace(']', ")")
+        self.show_arbre(tr)
+
+    def show_arbre(self,tree:str):
+        tree = nltk.Tree.fromstring(tree)
+        tree.draw()
 
     def _initialise_probabilistic_grammar(self, grammar: str) -> None:
         """
@@ -178,4 +227,10 @@ class CKY():
         if not self.initialise_ptable():
             return 0.0
         self._bottom_up_pcky()
-        return self._probabilities[0][self._n - 1].get(nltk.grammar.Nonterminal('S'), 0.0)
+        res = self._probabilities[0][self._n - 1].get(nltk.grammar.Nonterminal('S'), 0.0)
+        if res:
+            print(self._table)
+            self.reconstruir_traza()
+        return res
+
+

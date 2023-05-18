@@ -4,7 +4,7 @@ import re
 
 alg = CKY()
 
-with open("PAA_practica_cky\proves.txt", encoding="utf-8") as p:
+with open("proves.txt", encoding="utf-8") as p:
     doc = p.readlines()
     long = len(doc)
     n = 0

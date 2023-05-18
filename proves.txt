@@ -94,3 +94,16 @@ V -> 'flies' [0.5]
 V -> 'like' [0.5]
 
 time flies like an arrow
+
+Exemple 9
+Gramática
+S -> NP VP
+NP -> DET N | NP PP
+VP -> V NP | VP PP | V N
+PP -> P NP
+DET -> 'el' | 'un' | 'mi' | 'la'
+N -> 'gato' | 'ratón' | 'casa' | 'queso'
+V -> 'persigue' | 'come' | 've'
+P -> 'en' | 'sobre' | 'bajo' | 'cerca de'
+
+mi gato persigue un ratón,un ratón come queso en mi casa,mi gato ve un ratón en mi casa,un ratón en mi casa persigue un gato,el gato sobre el queso come un ratón bajo la casa
