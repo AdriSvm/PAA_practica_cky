@@ -2,7 +2,6 @@ import nltk
 from nltk import PCFG
 from cfg_cnf_converter import ChomskyConverter, ProbabilisticChomskyConverter
 import os
-from graphviz import Source
 
 class CKY():
 
@@ -131,13 +130,13 @@ class CKY():
             pos_2 = ele[0][1]
             if pos_1[0] == pos_1[1]:
                 ar.append([self._traza[pos_1],self._phrase[self._i]])
-                self._i = self._i+1
+                self._i += 1
             else:
                 ar.append([])
                 construir_arbre(ar[len(ar)-1],self._traza[pos_1])
             if pos_2[0] == pos_2[1]:
                 ar.append([self._traza[pos_2],self._phrase[self._i]])
-                self._i = self._i + 1
+                self._i += 1
             else:
                 ar.append([])
                 construir_arbre(ar[len(ar) - 1], self._traza[pos_2])
@@ -198,6 +197,7 @@ class CKY():
         Main method to call for executing the bottom_up Probabilistic CKY algorithm with Dynamic Programming
         :return: None, saves the result to the self._probabilities object
         """
+        traza = {}
         if self._pgrammar and self._probabilities and self._n > 0:
             for j in range(1, self._n):
                 for i in range(j - 1, -1, -1):
@@ -211,6 +211,13 @@ class CKY():
                                     if rule.lhs() not in self._probabilities[i][j] or prob > \
                                             self._probabilities[i][j][rule.lhs()]:
                                         self._probabilities[i][j][rule.lhs()] = prob
+                                        traza[(i,j)] = (((i,k),(k+1,j)),rule.lhs())
+                                        if i == k:
+                                            traza[(i,k)] = B
+                                        if k+1 == j:
+                                            traza[(k+1,j)] = C
+
+        self._traza = traza
 
     def pcky_parse(self, words: list, grammar: str) -> float:
         """
@@ -229,7 +236,6 @@ class CKY():
         self._bottom_up_pcky()
         res = self._probabilities[0][self._n - 1].get(nltk.grammar.Nonterminal('S'), 0.0)
         if res:
-            print(self._table)
             self.reconstruir_traza()
         return res
 
