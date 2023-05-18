@@ -1,0 +1,96 @@
+Exemple 1
+Gramática
+S -> NP VP
+NP -> DET N
+VP -> V
+DET -> 'UN' | 'EL'
+N -> 'GOS' | 'GAT'
+V -> 'CORRE' | 'SALTA'
+
+EL GOS CORRE
+
+Exemple 2
+Gramática
+S -> NP VP
+NP -> DET N
+VP -> V NP
+DET -> 'UN' | 'EL'
+N -> 'LLIBRE' | 'AMIC'
+V -> 'LLEGEIX' | 'CONEIX'
+
+EL AMIC LLEGEIX
+
+Exemple 3
+Gramática probabilística
+S -> NP VP [0.6] | NP VP ADV [0.4]
+NP -> DET N [0.8] | DET ADJ N [0.2]
+VP -> V NP [0.5] | V [0.5]
+ADV -> 'RÀPIDAMENT' [0.3] | 'TRANQUIL·LAMENT' [0.7]
+DET -> 'EL' [0.6] | 'UN' [0.4]
+ADJ -> 'GRAN' [0.7] | 'PETIT' [0.3]
+N -> 'GOS' [0.4] | 'GAT' [0.6]
+V -> 'CORRE' [0.7] | 'SALTA' [0.3]
+
+EL GOS CORRE RÀPIDAMENT
+
+Exemple 4
+Gramática probabilística
+S -> NP VP [0.5] | VP [0.5]
+NP -> PRON [0.4] | DET N [0.3] | N [0.3]
+VP -> V NP [0.6] | V ADV [0.4]
+PRON -> 'ELL' [0.5] | 'ELLA' [0.5]
+DET -> 'EL' 'SEU' [0.4] | 'EL' 'MEU' [0.3] | 'UN' [0.3]
+N -> 'LLIBRE' [0.6] | 'GAT' [0.4]
+V -> 'LLEGEIX' [0.7] | 'DORM' [0.3]
+ADV -> 'TRANQUIL·LAMENT' [0.8] | 'RÀPIDAMENT' [0.2]
+
+ELLA LLEGEIX EL SEU LLIBRE TRANQUIL·LAMENT
+
+Exemple 5
+Gramática
+S -> 'a' | X A | A X | 'b'
+A -> R B
+B -> A X | 'b' | 'a'
+X -> 'a'
+R -> X B
+
+abba,ababa,abaababa,ababa
+
+Exemple 6
+Gramática
+S -> A B | C D | C B | S S
+A -> B C | 'a'
+B -> S C | 'b'
+C -> D D | 'b'
+D -> B A
+
+aba,bbab,ababa,ab,abaaab
+
+Exemple 7
+Gramática
+S -> NP VP
+NP -> Det N
+VP -> V NP
+Det -> 'the' | 'a'
+N -> 'cat' | 'dog' | 'table' | 'house'
+V -> 'chases' | 'sleeps' | 'sits'
+
+the cat chases a dog,a dog sleeps on the table,the house sits on the table,a cat chases the dog,the dog sleeps on a house
+
+Exemple 8
+Gramática probabilística
+S -> NP VP [1.0]
+NP -> N N [0.25]
+NP -> D N [0.4]
+NP -> N [0.35]
+VP -> V NP [0.6]
+VP -> V ADV NP [0.4]
+N -> 'time' [0.4]
+N -> 'flies' [0.2]
+N -> 'arrow' [0.4]
+D -> 'an' [1.0]
+ADV -> 'like' [1.0]
+V -> 'flies' [0.5]
+V -> 'like' [0.5]
+
+time flies like an arrow

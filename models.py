@@ -102,7 +102,6 @@ class CKY():
         if not self._initialise_table():
             return False
         self._bottom_up_cky()
-        # The sentence complies with the grammar if S is in cell (0, self._n-1)
         return nltk.grammar.Nonterminal('S') in self._table[0][self._n - 1]
 
 
@@ -179,96 +178,4 @@ class CKY():
         if not self.initialise_ptable():
             return 0.0
         self._bottom_up_pcky()
-        # The sentence complies with the grammar if S is in cell (0, self._n-1)
         return self._probabilities[0][self._n - 1].get(nltk.grammar.Nonterminal('S'), 0.0)
-
-    def joc_de_proves(self):
-        grammar = """
-            S -> NP VP [1.0]
-            NP -> N N [0.25]
-            NP -> D N [0.4]
-            NP -> N [0.35]
-            VP -> V NP [0.6]
-            VP -> V ADV NP [0.4]
-            N -> 'time' [0.4]
-            N -> 'flies' [0.2]
-            N -> 'arrow' [0.4]
-            D -> 'an' [1.0]
-            ADV -> 'like' [1.0]
-            V -> 'flies' [0.5]
-            V -> 'like' [0.5]
-        """
-        sentences = "time flies like an arrow"
-
-        if self.pcky_parse(sentences, grammar):
-            print(f"'{sentences}' cumple con la gramática")
-        else:
-            print(f"'{sentences}' no cumple con la gramática")
-
-
-    def joc_de_proves2(self):
-        grammar = """
-                    S -> 'a' | X A | A X | 'b'
-                    A -> R B
-                    B -> A X | 'b' | 'a'
-                    X -> 'a'
-                    R -> X B
-                """
-        grammar = """
-                S -> A B | A C
-                A -> 'a'
-                B -> 'b'
-                C -> 'c'
-                D -> 'g'
-                """
-        sentences = [
-            "ab",
-            "ac",
-            "aac"
-        ]
-        for sentence in sentences:
-            if self.cky_parse(list(sentence), grammar):
-                print(f"'{sentence}' cumple con la gramática")
-            else:
-                print(f"'{sentence}' no cumple con la gramática")
-
-    def joc_de_proves_pcfg1(self):
-        grammar_cnf = """
-            S -> A B [1.0]
-            A -> 'a' [1.0]
-            B -> C D E [1.0]
-            C -> 'b' [1.0]
-            D -> E F [1.0]
-            E -> 'c' [1.0]
-            F -> 'd' [1.0]
-        """
-
-        sentences = ["abcd"]
-
-        for sentence in sentences:
-            if self.pcky_parse(list(sentence),grammar_cnf):
-                print(f"'{sentence}' cumple con la gramática")
-            else:
-                print(f"'{sentence}' no cumple con la gramática")
-
-    def joc_de_proves_pcfg2(self):
-        grammar_cnf = """
-            S -> A B C D [1.0]
-            A -> 'a' [1.0]
-            B -> 'b' [1.0]
-            C -> 'c' [1.0]
-            D -> 'd' [1.0]
-        """
-
-        sentences = ["abc"]
-
-        for sentence in sentences:
-            res = self.pcky_parse(list(sentence),grammar_cnf)
-            if res:
-                print(f"'{sentence}' cumple con la gramática con probabilidad",res)
-            else:
-                print(f"'{sentence}' no cumple con la gramática, prob:", res)
-
-
-a = CKY()
-a.joc_de_proves()
