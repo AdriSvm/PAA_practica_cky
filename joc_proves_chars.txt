@@ -1,0 +1,69 @@
+Exemple 1
+Gramática
+S -> A B C | B C A
+A -> 'a' A | 'a'
+B -> 'b' B | 'b'
+C -> 'c' C | 'c'
+
+abc,aaabbbccc,abcc,abbbc,abcc
+
+Exemple 2
+Gramática probabilística
+S -> A B C [0.5] | B C A [0.5]
+A -> 'a' A [0.5] | 'a' [0.5]
+B -> 'b' B [0.3] | 'b' [0.7]
+C -> 'c' C [0.4] | 'c' [0.6]
+
+abcc,aaaabbbbcccc,aabcc,abccc,abcc
+
+Exemple 3
+Gramática
+S -> A B
+A -> 'a' A | 'a'
+B -> 'b' B | 'b'
+
+ab,aabb,aaabb,aaaabbb,ab
+
+Exemple 4
+Gramática probabilística
+S -> A B [0.9] | B A [0.1]
+A -> 'a' A [0.5] | 'a' [0.5]
+B -> 'b' B [0.6] | 'b' [0.4]
+
+ab,aabb,aaabbb,aaaabbbb,ab
+
+Exemple 5
+Gramática
+S -> A B C D
+A -> 'a' A | 'a'
+B -> 'b' B | 'b'
+C -> 'c' C | 'c'
+D -> 'd' D | 'd'
+
+abcd,aabbccdd,aaabbbcccddd,aaaabbbbccccdddd,abcd
+
+Exemple 6
+Gramática probabilística
+S -> A B C D [1.0]
+A -> 'a' A [0.3] | 'a' [0.7]
+B -> 'b' B [0.5] | 'b' [0.5]
+C -> 'c' C [0.4] | 'c' [0.6]
+D -> 'd' D [0.2] | 'd' [0.8]
+
+abcd,aabbccdd,aaabbbcccddd,aaaabbbbccccdddd,abcd
+
+Exemple 7
+Gramática
+S -> 'x' | A S B
+A -> 'a'
+B -> 'b'
+
+x,aab,aaabb,aaaabbb,aab
+
+Exemple 8
+Gramática probabilística
+S -> 'x' [0.1] | A S B [0.9]
+A -> 'a' [1.0]
+B -> 'b' [1.0]
+
+x,aab,aaabb,aaaabbb,aab
