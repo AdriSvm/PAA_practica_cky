@@ -4,7 +4,9 @@ import re
 
 alg = CKY()
 
-with open("proves.txt", encoding="utf-8") as p:
+arxiu_a_llegir = "joc_proves_chars.txt"
+
+with open(arxiu_a_llegir, encoding="utf-8") as p:
     doc = p.readlines()
     long = len(doc)
     n = 0

@@ -1,0 +1,116 @@
+Exemple 1
+Gramática
+S -> NP VP
+NP -> Det N
+VP -> V NP
+Det -> 'the' | 'a'
+N -> 'boy' | 'girl' | 'park' | 'ball'
+V -> 'throws' | 'catches' | 'kicks'
+
+the boy throws a ball,a girl kicks the ball in the park,the ball catches the girl in the park
+
+Exemple 2
+Gramática
+S -> NP VP
+NP -> Det N | N
+VP -> V NP | V
+Det -> 'the' | 'a'
+N -> 'man' | 'woman' | 'song' | 'radio'
+V -> 'sings' | 'listens'
+
+the man sings a song,a woman listens to the radio, a song sings the woman
+
+Exemple 3
+Gramática
+S -> NP VP
+NP -> Det N | NP PP
+VP -> V NP | VP PP
+PP -> P NP
+Det -> 'the' | 'a'
+N -> 'cat' | 'mouse' | 'house' | 'cheese'
+V -> 'chases' | 'eats' | 'sees'
+P -> 'in' | 'on' | 'under' | 'near'
+
+the cat chases a mouse,a mouse eats cheese in my house,the cat sees a mouse in my house,a mouse in my house chases a cat,the cat on the cheese eats a mouse under the house
+
+Exemple 4
+Gramática probabilística
+S -> NP VP [1.0]
+NP -> N N [0.2] | D N [0.6] | N [0.2]
+VP -> V NP [0.6] | V ADV NP [0.4]
+N -> 'time' [0.4] | 'flies' [0.3] | 'arrow' [0.3]
+D -> 'an' [1.0]
+ADV -> 'like' [1.0]
+V -> 'flies' [0.5] | 'like' [0.5]
+
+time flies like an arrow
+
+Exemple 5
+Gramática probabilística
+S -> NP VP [0.7] | VP NP [0.3]
+NP -> DET N [0.6] | PRON [0.4]
+VP -> V NP [0.6] | V [0.4]
+DET -> 'the' [0.5] | 'a' [0.3] | 'my' [0.2]
+PRON -> 'he' [0.6] | 'she' [0.4]
+N -> 'dog' [0.4] | 'cat' [0.3] | 'garden' [0.3]
+V -> 'runs' [0.6] | 'jumps' [0.2] | 'plays' [0.2]
+
+he runs my dog,a cat jumps in the garden
+
+Exemple 6
+Gramática
+S -> NP VP
+NP -> Det N | NP PP
+VP -> V NP | VP PP
+PP -> P NP
+Det -> 'el' | 'una' | 'mi'
+N -> 'perro' | 'gato' | 'casa' | 'jardín'
+V -> 'corre' | 'salta' | 'juega'
+P -> 'en' | 'sobre' | 'bajo' | 'alrededor de'
+
+el perro corre en mi casa,una casa juega bajo el jardín,mi gato salta sobre una casa,un perro en mi jardín juega alrededor de un gato,el jardín alrededor de la casa juega con mi gato
+
+Exemple 7
+Gramática
+S -> NP VP
+NP -> Det N | N
+VP -> V NP | V
+Det -> 'the' | 'a'
+N -> 'bird' | 'cat' | 'sky' | 'mouse'
+V -> 'flies' | 'catches' | 'sees'
+
+the bird flies in the sky,a cat catches a mouse,the mouse sees a bird
+
+Exemple 8
+Gramática
+S -> NP VP
+NP -> Det N | N
+VP -> V NP | V
+Det -> 'the' | 'a'
+N -> 'boy' | 'girl' | 'park' | 'ball'
+V -> 'throws' | 'catches' | 'kicks'
+
+the boy throws a ball,a girl kicks the ball in the park,the ball catches the girl in the park
+
+Exemple 9
+Gramática probabilística
+S -> NP VP [0.6] | VP NP [0.4]
+NP -> DET N [0.6] | PRON [0.4]
+VP -> V NP [0.7] | V [0.3]
+DET -> 'the' [0.4] | 'a' [0.3] | 'my' [0.3]
+PRON -> 'he' [0.5] | 'she' [0.5]
+N -> 'car' [0.4] | 'bike' [0.3] | 'house' [0.3]
+V -> 'drives' [0.6] | 'lives' [0.2] | 'washes' [0.2]
+
+she drives my car,a bike lives in the house
+
+Exemple 10
+Gramática
+S -> NP VP
+NP -> Det N
+VP -> V NP
+Det -> 'the' | 'a'
+N -> 'teacher' | 'student' | 'book' | 'class'
+V -> 'teaches' | 'reads' | 'sits'
+
+the teacher teaches a class,a student reads a book,the book sits in the class

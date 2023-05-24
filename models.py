@@ -121,7 +121,7 @@ class CKY():
         return res
 
     def reconstruir_traza(self):
-        if self._traza is None:
+        if self._traza is None or self._table is None:
             return ()
         self._i = 0
         def construir_arbre(ar,ele):
