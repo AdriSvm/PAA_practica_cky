@@ -48,26 +48,6 @@ ELLA LLEGEIX EL SEU LLIBRE TRANQUIL·LAMENT
 
 Exemple 5
 Gramática
-S -> 'a' | X A | A X | 'b'
-A -> R B
-B -> A X | 'b' | 'a'
-X -> 'a'
-R -> X B
-
-abba,ababa,abaababa,ababa
-
-Exemple 6
-Gramática
-S -> A B | C D | C B | S S
-A -> B C | 'a'
-B -> S C | 'b'
-C -> D D | 'b'
-D -> B A
-
-aba,bbab,ababa,ab,abaaab
-
-Exemple 7
-Gramática
 S -> NP VP
 NP -> Det N
 VP -> V NP
@@ -77,7 +57,7 @@ V -> 'chases' | 'sleeps' | 'sits'
 
 the cat chases a dog,a dog sleeps on the table,the house sits on the table,a cat chases the dog,the dog sleeps on a house
 
-Exemple 8
+Exemple 6
 Gramática probabilística
 S -> NP VP [1.0]
 NP -> N N [0.25]
@@ -95,7 +75,7 @@ V -> 'like' [0.5]
 
 time flies like an arrow
 
-Exemple 9
+Exemple 7
 Gramática
 S -> NP VP
 NP -> DET N | NP PP
